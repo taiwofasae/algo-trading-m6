@@ -4,8 +4,8 @@ import sys
 
 from kafka import KafkaProducer
 
-from data.alpaca import live_prices as alpaca_live_prices
-from config.config import (KAFKA_BROKERS)
+from src.data.alpaca import live_prices as alpaca_live_prices
+from src.config.config import (KAFKA_BROKERS)
 
 CRYPTO = False
 

@@ -5,11 +5,11 @@ import datetime
 import yfinance as yf
 import pandas as pd
 from multiprocessing import Process
-from livestream.kafka.consumers import topic
-from data import market
+from src.streaming.kafka.consumers import topic
+from src.data import market
 
 
-DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 THIRTYDAYS_FOLDER_PATH_FORMAT = './analytics/30days/{0}.csv'
 STOCKS_LIST_PATH = './analytics/stocks_list.txt'
 
@@ -75,7 +75,7 @@ class STORAGE:
         def get():
             today_live_and_30d_returns = _load_df(TODAY_LIVE_AND_30DAY_RETURNS_FILEPATH)
             
-            all_day_and_30d_returns = _load_df(ALL_DAY_RETURNS_FILEPATH)
+            all_day_and_30d_returns = _load_df(ALL_DAY_AND_30DAY_RETURNS_FILEPATH)
                 
             return today_live_and_30d_returns, all_day_and_30d_returns
         

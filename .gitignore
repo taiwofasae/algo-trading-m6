@@ -1,6 +1,7 @@
 .ipynb_checkpoints/
 __pycache__/
 myenv/
+jupiter_env/
 
 .env
 

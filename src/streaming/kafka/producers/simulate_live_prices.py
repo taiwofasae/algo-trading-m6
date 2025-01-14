@@ -4,7 +4,7 @@ from time import time
 
 from kafka import KafkaProducer
 
-from config.config import KAFKA_BROKERS
+from src.config.config import KAFKA_BROKERS
 
 
 def live_prices(topic):

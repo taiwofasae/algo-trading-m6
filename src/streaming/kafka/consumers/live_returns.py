@@ -3,9 +3,9 @@ import json
 import sys
 
 from kafka import KafkaProducer, KafkaConsumer
-from config.config import KAFKA_BROKERS, KAFKA_CONSUMER_GROUP
-from portfolio import portfolio
-from data import market
+from src.config.config import KAFKA_BROKERS, KAFKA_CONSUMER_GROUP
+from src.portfolio import portfolio
+from src.data import market
 
 DATA_PROVIDER_KEY = "data_provider"
 

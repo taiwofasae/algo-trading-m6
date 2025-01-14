@@ -1,0 +1,68 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: OUTSIDE://localhost:9092, INTERNAL://kafka:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: OUTSIDE:PLAINTEXT, INTERNAL:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "${PRICE_TOPIC}:1:1,${RETURNS_TOPIC}:1:1"
+
+  market_news:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      KAFKA_BROKERS: ${KAFKA_BROKERS:-kafka:29092}
+      ALPACA_API_KEY: ${ALPACA_API_KEY}
+      ALPACA_SECRET_KEY: ${ALPACA_SECRET_KEY}
+      SYMBOLS: AAPL,MSFT
+    volumes:
+      - ./stocks_list.txt:/app/stocks_list.txt
+    command: sh -c 'python -u src/streaming/kafka/producers/alpaca_live_prices.py --symbols $${SYMBOLS} --topic $${PRICE_TOPIC}'
+
+  returns_agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      KAFKA_BROKERS: ${KAFKA_BROKERS:-kafka:29092}
+    volumes:
+      - ./submissions:/app/submissions
+      - ./stocks_list.txt:/app/stocks_list.txt
+    command: sh -c 'python -u src/streaming/kafka/consumers/live_returns.py --symbols $${SYMBOLS} --price_topic $${PRICE_TOPIC} --returns_topic $${RETURNS_TOPIC}'
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      KAFKA_BROKERS: ${KAFKA_BROKERS:-kafka:29092}
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./analytics:/app/analytics
+      - ./submissions:/app/submissions
+      - ./stocks_list.txt:/app/stocks_list.txt
+      - ./Dashboard.ipynb:/app/Dashboard.ipynb
+    command: sh -c 'python -m pip install jupyterlab && jupyter lab --ip=0.0.0.0 --port=8888 --allow-root'

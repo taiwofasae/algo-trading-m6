@@ -3,7 +3,7 @@ import json
 import sys
 import os
 
-from data.alpaca import alpaca_utils
+from src.data.alpaca import alpaca_utils
 
 
 CRYPTO = False

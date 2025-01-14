@@ -2,7 +2,7 @@ import argparse
 import json
 
 from kafka import KafkaProducer, KafkaConsumer
-from config.config import KAFKA_BROKERS, KAFKA_CONSUMER_GROUP
+from src.config.config import KAFKA_BROKERS, KAFKA_CONSUMER_GROUP
 
 
 def consume_topic(topic, handler=None, verbose=False):

@@ -21,7 +21,7 @@ from alpaca_trade_api.common import URL
 from alpaca_trade_api.rest import REST, Sort
 from alpaca_trade_api.stream import Stream
 
-from config.config import (ALPACA_API_KEY, ALPACA_DATA_FEED, ALPACA_PAPER,
+from src.config.config import (ALPACA_API_KEY, ALPACA_DATA_FEED, ALPACA_PAPER,
                     ALPACA_SECRET_KEY, ALPACA_URL)
 
 
