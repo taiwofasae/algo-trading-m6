@@ -2,3 +2,9 @@ seaborn==0.13.2
 pandas==2.2.3
 numpy==2.2.1
 jupyterplot==0.0.3
+ipympl==0.9.6
+jupyterlab==4.3.4
+ipywidgets==8.1.5
+plotly==5.24.1
+dash==2.18.2
+jupyter_dash==0.4.2

@@ -2,6 +2,7 @@
 __pycache__/
 myenv/
 jupiter_env/
+ML_env/
 
 .env
 
